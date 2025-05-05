@@ -1,4 +1,4 @@
-import {type Dispatch, type SetStateAction, useEffect, useRef, useState} from "react";
+import {type Dispatch, type SetStateAction, useEffect, useMemo, useRef, useState} from "react";
 
 export class WsEvent {
     data: string;
@@ -65,9 +65,11 @@ function initialWebSockets(portStart: number, portEnd: number) {
 export function useWebSockets(): WsEvent[] {
     const [dummy, setDummy] = useState(false);
 
-    const [portStart, portEnd] = document.getElementById("port-marker-he9RYeXH5Psd7vcKOzWs")?.innerText?.split("-")?.map(
-        (e) => parseInt(e)
-    ) ?? (console.warn("Using default ports"), [3030, 3040]);
+    const [portStart, portEnd] = useMemo(() => {
+        return document.getElementById("port-marker-he9RYeXH5Psd7vcKOzWs")?.innerText?.split("-")?.map(
+            (e) => parseInt(e)
+        ) ?? (console.warn("Using default ports"), [3030, 3040]);
+    }, []);
 
     const websockets = useRef<WsGroup[]>([]);
 

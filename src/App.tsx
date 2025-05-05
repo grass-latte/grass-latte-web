@@ -9,9 +9,11 @@ export default function App() {
     queue.forEach((e) => console.log(e));
 
     const tree = AbstractLogElement.rootElement();
-    tree.addElement(["yes", "no"], new NodeElement("hello"));
+    tree.addElement(["1", "2", "3"], new NodeElement("hello"));
+
+    tree.addElement(["1", "4"], new NodeElement("hello2"));
 
     return <>
-        {tree.render("root")}
+        {tree.render()}
     </>
 }
