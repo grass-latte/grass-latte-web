@@ -1,17 +1,7 @@
-import {AbstractLogElement} from "./backend/log_tree.ts";
+import type {NodeElement} from "./node_element.ts";
 import {useState} from "react";
 
-export class NodeElement extends AbstractLogElement {
-    constructor(id: string) {
-        super(id);
-    }
-
-    render() {
-        return RenderNodeElement(this);
-    }
-}
-
-function RenderNodeElement(nodeElement: NodeElement) {
+export function RenderNodeElement(nodeElement: NodeElement) {
     const [a, setA] = useState(0);
 
     return <div key={nodeElement.id.toString()}>
