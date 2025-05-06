@@ -1,5 +1,5 @@
-import {NodeElement} from "../NodeElement.tsx";
 import * as React from "react";
+import {NodeElement} from "../node_element.ts";
 
 export abstract class AbstractLogElement extends React.Component {
     id: string;

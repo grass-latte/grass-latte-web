@@ -1,7 +1,7 @@
 import {useWebSockets} from "./backend/websockets.ts";
-import {NodeElement} from "./NodeElement.tsx";
 import {AbstractLogElement} from "./backend/log_tree.ts";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {NodeElement} from "./node_element.ts";
 
 
 export default function App() {
