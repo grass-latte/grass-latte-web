@@ -31,7 +31,12 @@ class WsGroup {
         this.ws.onclose = () => {
             if (this.wasConnected) console.log(`${this.ws.url} disconnected`);
             this.wasConnected = false;
+            this.setDummy!(this.setDummyTo!);
         };
+    }
+
+    connected(): boolean {
+        return this.ws.readyState === WebSocket.OPEN;
     }
 
     reconnect() {
@@ -62,7 +67,7 @@ function initialWebSockets(portStart: number, portEnd: number) {
     return websockets;
 }
 
-export function useWebSockets(): WsEvent[] {
+export function useWebSockets(): [WsEvent[], boolean] {
     const [dummy, setDummy] = useState(false);
 
     const [portStart, portEnd] = useMemo(() => {
@@ -93,10 +98,12 @@ export function useWebSockets(): WsEvent[] {
     });
 
     let queue: WsEvent[] = [];
+    let connected = false;
     for (const wsg of websockets.current) {
+        connected = connected || wsg.connected();
         queue = queue.concat(wsg.queue);
         wsg.queue = [];
     }
 
-    return queue;
+    return [queue, connected];
 }

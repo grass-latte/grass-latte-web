@@ -4,10 +4,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {useState} from "react";
 import {handlePacket} from "./backend/handle_packet.ts";
 import AnyElement from "./AnyElement.tsx";
+import DisconnectedWarning from "./DisconnectedWarning.tsx";
 
 
 export default function App() {
-    const queue = useWebSockets();
+    const [queue, isConnected] = useWebSockets();
 
     const [tree, setTree] = useState(AbstractLogElement.rootElement());
 
@@ -18,5 +19,6 @@ export default function App() {
 
     return <>
         <AnyElement element={tree}/>
+        {!isConnected && <DisconnectedWarning/>}
     </>
 }
