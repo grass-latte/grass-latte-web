@@ -1,13 +1,9 @@
-import * as React from "react";
-import {NodeElement} from "../node_element.ts";
-
-export abstract class AbstractLogElement extends React.Component {
+export abstract class AbstractLogElement {
     id: string;
     children: Map<string, AbstractLogElement>;
     created: number;
 
     protected constructor(id: string) {
-        super({});
         this.id = id;
         this.children = new Map();
         this.created = Date.now();
@@ -41,5 +37,21 @@ export abstract class AbstractLogElement extends React.Component {
 
     static rootElement(): AbstractLogElement {
         return new NodeElement("root");
+    }
+
+    abstract type(): string;
+}
+
+export class NodeElement extends AbstractLogElement {
+    constructor(id: string) {
+        super(id);
+    }
+
+    static s_type(): string {
+        return "node";
+    };
+
+    type(): string {
+        return NodeElement.s_type();
     }
 }

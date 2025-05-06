@@ -1,19 +1,22 @@
 import {useWebSockets} from "./backend/websockets.ts";
 import {AbstractLogElement} from "./backend/log_tree.ts";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {NodeElement} from "./node_element.ts";
+import {useState} from "react";
+import {handlePacket} from "./backend/handle_packet.ts";
+import AnyElement from "./AnyElement.tsx";
 
 
 export default function App() {
     const queue = useWebSockets();
-    queue.forEach((e) => console.log(e));
 
-    const tree = AbstractLogElement.rootElement();
-    tree.addElement(["1", "2", "3"], new NodeElement("hello"));
+    const [tree, setTree] = useState(AbstractLogElement.rootElement());
 
-    tree.addElement(["1", "4"], new NodeElement("hello2"));
+    if (queue.length !== 0) {
+        handlePacket(queue, tree);
+        setTree(tree);
+    }
 
     return <>
-        {tree.render()}
+        <AnyElement element={tree}/>
     </>
 }

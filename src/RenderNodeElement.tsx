@@ -1,11 +1,16 @@
-import type {NodeElement} from "./node_element.ts";
-import {useState} from "react";
+import {type ReactNode, useState} from "react";
+import type {NodeElement} from "./backend/log_tree.ts";
+import AnyElement from "./AnyElement.tsx";
 
-export function RenderNodeElement(nodeElement: NodeElement) {
+interface Props {
+    node: NodeElement;
+}
+
+export function RenderNodeElement({node}: Props): ReactNode {
     const [a, setA] = useState(0);
 
-    return <div key={nodeElement.id.toString()}>
-        <h3 onClick={() => {setA(a + 1);}}>{nodeElement.id} - {a}</h3>
+    return <div key={node.id.toString()}>
+        <h3 onClick={() => {setA(a + 1);}}>{node.id} - {a}</h3>
         <div className="d-flex flex-row">
             <div style={{width: "20px", height: "auto"}}>
                 <div className="d-flex flex-row h-100 w-100">
@@ -15,7 +20,7 @@ export function RenderNodeElement(nodeElement: NodeElement) {
             </div>
 
             <div>
-                {[...nodeElement.children].map(([, v]) => v.render())}
+                {[...node.children].map(([i, v]) => <AnyElement key={i} element={v}/>)}
             </div>
         </div>
     </div>;

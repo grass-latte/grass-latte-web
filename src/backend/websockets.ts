@@ -76,7 +76,7 @@ export function useWebSockets(): WsEvent[] {
     useEffect(() => {
         const interval = setInterval(() => {
             websockets.current.forEach((ws) => ws.reconnect());
-        }, 1000);
+        }, 100);
 
         return () => {
             clearInterval(interval);
