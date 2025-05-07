@@ -56,7 +56,7 @@ export class NodeElement extends AbstractLogElement {
         return NodeElement.s_type();
     }
 
-    updateData(new_data: any): void {}
+    updateData(): void {}
 }
 
 export class TextElement extends AbstractLogElement {

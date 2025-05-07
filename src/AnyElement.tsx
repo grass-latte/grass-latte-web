@@ -9,7 +9,7 @@ interface Props {
 export default function AnyElement({element}: Props) {
     switch (element.type()) {
         case NodeElement.s_type():
-            return <RenderNodeElement node={element}/>
+            return <RenderNodeElement node={element as NodeElement}/>
         case TextElement.s_type():
             return <RenderTextElement textElement={element as TextElement}/>
         default:
