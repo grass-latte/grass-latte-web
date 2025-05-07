@@ -1,1 +1,1 @@
-export const SAMPLE_MODE = false
+export const SAMPLE_MODE = false;
