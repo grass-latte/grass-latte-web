@@ -29,11 +29,12 @@ export abstract class AbstractLogElement {
     deleteElement(path: string[]) {
         if (path.length === 1) {
             this.children.delete(path[0]);
-        }
-        else {
+        } else {
             this.children.get(path[0])?.deleteElement(path.slice(1));
         }
     }
+
+    abstract updateData(new_data: any): void;
 
     static rootElement(): AbstractLogElement {
         return new NodeElement("root");
@@ -53,5 +54,28 @@ export class NodeElement extends AbstractLogElement {
 
     type(): string {
         return NodeElement.s_type();
+    }
+
+    updateData(new_data: any): void {}
+}
+
+export class TextElement extends AbstractLogElement {
+    text: string;
+
+    constructor(id: string, data: any) {
+        super(id);
+        this.text = data.text;
+    }
+
+    updateData(new_data: any): void {
+        this.text = new_data.text;
+    }
+
+    static s_type(): string {
+        return "text";
+    };
+
+    type(): string {
+        return TextElement.s_type();
     }
 }

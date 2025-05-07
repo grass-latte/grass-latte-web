@@ -1,5 +1,5 @@
 import type {WsEvent} from "./websockets.ts";
-import {type AbstractLogElement, NodeElement} from "./log_tree.ts";
+import {type AbstractLogElement, NodeElement, TextElement} from "./log_tree.ts";
 
 export function handlePacket(queue: WsEvent[], tree: AbstractLogElement) {
     for (const event of queue) {
@@ -22,6 +22,9 @@ function handleElement(data: any, tree: AbstractLogElement) {
     switch (data.element.type) {
         case NodeElement.s_type():
             element = new NodeElement(data.path[data.path.length - 1]);
+            break;
+        case TextElement.s_type():
+            element = new TextElement(data.path[data.path.length - 1], data.element.data);
             break;
         default:
             console.warn(`Unhandled element type ${data.element.type}`);
