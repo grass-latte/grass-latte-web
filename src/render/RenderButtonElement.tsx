@@ -12,7 +12,7 @@ export function RenderButtonElement({buttonElement}: Props): ReactNode {
     const [dummy, setDummy] = useState(0);
 
     return <OptionalCard card={buttonElement.card} title={buttonElement.card ? buttonElement.id() : undefined} child_elements={buttonElement.children}>
-        <Button disabled={!buttonElement.handled} onClick={() => {
+        <Button className="w-100" disabled={!buttonElement.handled} onClick={() => {
             if (sendWebSocket(buttonElement.path, {type: "click", data: null})) {
                 setDummy(dummy + 1);
                 buttonElement.handled = false;

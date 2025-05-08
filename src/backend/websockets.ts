@@ -87,13 +87,16 @@ export function useWebSockets(): [WsEvent[], boolean] {
     const [portStart, portEnd] = useMemo(() => {
         return document.getElementById("port-marker-he9RYeXH5Psd7vcKOzWs")?.innerText?.split("-")?.map(
             (e) => parseInt(e)
-        ) ?? (console.warn("Using default ports"), [3030, 3040]);
+        ) ?? (console.warn("Using default ports"), [3030, 3035]);
     }, []);
 
     useEffect(() => {
+        let last_checked = 0;
         const interval = setInterval(() => {
-            websockets.forEach((ws) => ws.reconnect());
-        }, 100);
+            websockets[last_checked].reconnect();
+            last_checked++;
+            last_checked = last_checked % websockets.length;
+        }, 500);
 
         return () => {
             clearInterval(interval);

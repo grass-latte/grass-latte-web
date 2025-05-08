@@ -16,8 +16,8 @@ export class ButtonElement extends AbstractLogElement {
         this.card = new_data.card;
     }
 
-    changeHandled() {
-        this.handled = false;
+    setHandled() {
+        this.handled = true;
     }
 
     static s_type(): string {

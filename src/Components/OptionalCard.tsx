@@ -34,7 +34,7 @@ export default function OptionalCard({card, use_card_text, title, child_elements
     else {
         return <><div className="d-flex flex-row">
             {title && <p className="m-0">{title}:&nbsp;</p>}
-            <div>{children}</div>
+            <div className="flex-grow-1">{children}</div>
         </div>
             {child_elements && child_elements.size > 0 && <div className="d-flex flex-row mb-2">
                 <div style={{width: "30px", height: "auto"}}>

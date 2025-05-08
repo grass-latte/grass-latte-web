@@ -13,6 +13,5 @@ export function sampleTree() {
     tree.addElement([], ["Alpha", "Bravo", "Hotel", "Whiskey"], new TextElement(["Alpha", "Bravo", "Hotel", "Whiskey"], {text: "whiskey", card: false}));
     tree.addElement([], ["Alpha", "Bravo", "Juliet"], new ProgressElement(["Alpha", "Bravo", "Juliet"], {text: "", progress: 0.4, card: true}));
     tree.addElement([], ["Alpha", "Bravo", "Quebec"], new ProgressElement(["Alpha", "Bravo", "Quebec"], {text: "- Q", progress: 1.0, card: true}));
-
     return tree;
 }

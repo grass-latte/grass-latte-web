@@ -49,13 +49,8 @@ export abstract class AbstractLogElement {
         }
     }
 
-    clearElement(path: string[]) {
-        if (path.length === 0) {
-            this.children.clear();
-        }
-        else {
-            this.children.get(path[0])?.clearElement(path.slice(1));
-        }
+    clearElement() {
+        this.children.clear();
     }
 
     abstract updateData(new_data: any): void;
@@ -66,7 +61,7 @@ export abstract class AbstractLogElement {
 
     abstract type(): string;
 
-    changeHandled() {};
+    setHandled() {};
 }
 
 export class RootElement extends AbstractLogElement {

@@ -60,10 +60,10 @@ function handleDelete(data: any, tree: AbstractLogElement) {
     tree.deleteElement(data.path);
 }
 
-function handleClear(data: any, tree: AbstractLogElement) {
-    tree.clearElement(data.path);
+function handleClear(_data: any, tree: AbstractLogElement) {
+    tree.clearElement();
 }
 
 function handleHandled(data: any, tree: AbstractLogElement) {
-    tree.getElement(data.path)?.changeHandled();
+    tree.getElement(data.path)?.setHandled();
 }
