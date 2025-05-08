@@ -5,17 +5,18 @@ import AnyElement from "../AnyElement.tsx";
 
 interface Props {
     card: boolean,
+    use_card_text?: boolean,
     title?: string,
     child_elements?: Map<string, AbstractLogElement>
     children?: ReactNode,
 }
 
-export default function OptionalCard({card, title, child_elements, children}: Props) {
+export default function OptionalCard({card, use_card_text, title, child_elements, children}: Props) {
     if (card) {
         return <Card className="w-auto mb-2">
             <CardBody>
                 {title && <CardTitle>{title}</CardTitle>}
-                <CardText>{children}</CardText>
+                {use_card_text ? <CardText>{children}</CardText> : children}
                 {child_elements && child_elements.size > 0 && <div className="d-flex flex-row">
                     <div style={{width: "30px", height: "auto"}}>
                         <div className="d-flex flex-row h-100 w-100">

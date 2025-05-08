@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function RenderTextElement({textElement}: Props): ReactNode {
-    return <OptionalCard card={textElement.card} title={textElement.id} child_elements={textElement.children}>
+    return <OptionalCard use_card_text card={textElement.card} title={textElement.id()} child_elements={textElement.children}>
         <p className="m-0">{textElement.text}</p>
     </OptionalCard>;
 }

@@ -1,8 +1,9 @@
 import {AbstractLogElement} from "./log_tree.ts";
 
-export class TextElement extends AbstractLogElement {
+export class ButtonElement extends AbstractLogElement {
     text: string
     card: boolean;
+    handled: boolean = true;
 
     constructor(path: string[], data: any) {
         super(path);
@@ -15,11 +16,15 @@ export class TextElement extends AbstractLogElement {
         this.card = new_data.card;
     }
 
+    changeHandled() {
+        this.handled = false;
+    }
+
     static s_type(): string {
-        return "text";
+        return "button";
     };
 
     type(): string {
-        return TextElement.s_type();
+        return ButtonElement.s_type();
     }
 }

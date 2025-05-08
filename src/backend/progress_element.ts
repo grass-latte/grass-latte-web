@@ -5,8 +5,8 @@ export class ProgressElement extends AbstractLogElement {
     card: boolean;
     text: string | undefined;
 
-    constructor(id: string, data: any) {
-        super(id);
+    constructor(path: string[], data: any) {
+        super(path);
         this.progress = data.progress;
         this.card = data.card;
         this.text = data.text;

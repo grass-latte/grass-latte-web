@@ -14,7 +14,7 @@ export function RenderNodeElement({node}: Props): ReactNode {
 
 
     return <div key={node.id.toString()} className="w-auto mb-2">
-        <h3 className="mb-0" onClick={toggle}>{isOpen ? <CaretDown/> : <CaretRight/>} {node.id}</h3>
+        <h3 className="mb-0" onClick={toggle}>{isOpen ? <CaretDown/> : <CaretRight/>} {node.id()}</h3>
         <AnimatePresence initial={false}>
             {isOpen && <motion.div className="d-flex flex-row"
                                    key="content"

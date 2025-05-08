@@ -1,4 +1,4 @@
-import {type Dispatch, type SetStateAction, useEffect, useMemo, useRef, useState} from "react";
+import {type Dispatch, type SetStateAction, useEffect, useMemo, useState} from "react";
 
 export class WsEvent {
     data: string;
@@ -52,6 +52,14 @@ class WsGroup {
         this.queue.push(new WsEvent(event.data));
     }
 
+    send(path: string[], data: any) {
+        if (this.connected()) {
+            this.ws.send(JSON.stringify({path: path, data: data}));
+            return true;
+        }
+        return false;
+    }
+
     dispose() {
         this.ws.close();
     }
@@ -67,6 +75,12 @@ function initialWebSockets(portStart: number, portEnd: number) {
     return websockets;
 }
 
+let websockets: WsGroup[] = []
+
+export function sendWebSocket(path: string[], data: any) {
+    return !websockets.every(ws => !ws.send(path, data));
+}
+
 export function useWebSockets(): [WsEvent[], boolean] {
     const [dummy, setDummy] = useState(false);
 
@@ -76,30 +90,28 @@ export function useWebSockets(): [WsEvent[], boolean] {
         ) ?? (console.warn("Using default ports"), [3030, 3040]);
     }, []);
 
-    const websockets = useRef<WsGroup[]>([]);
-
     useEffect(() => {
         const interval = setInterval(() => {
-            websockets.current.forEach((ws) => ws.reconnect());
+            websockets.forEach((ws) => ws.reconnect());
         }, 100);
 
         return () => {
             clearInterval(interval);
-            websockets.current.forEach((ws) => ws.dispose());
+            websockets.forEach((ws) => ws.dispose());
         }
     }, []);
 
-    if (websockets.current.length === 0) {
-        websockets.current = initialWebSockets(portStart, portEnd);
+    if (websockets.length === 0) {
+        websockets = initialWebSockets(portStart, portEnd);
     }
-    websockets.current.forEach((ws) => {
+    websockets.forEach((ws) => {
         ws.setDummy = setDummy;
         ws.setDummyTo = !dummy;
     });
 
     let queue: WsEvent[] = [];
     let connected = false;
-    for (const wsg of websockets.current) {
+    for (const wsg of websockets) {
         connected = connected || wsg.connected();
         queue = queue.concat(wsg.queue);
         wsg.queue = [];

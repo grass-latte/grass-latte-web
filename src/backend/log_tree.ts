@@ -1,12 +1,16 @@
 export abstract class AbstractLogElement {
-    id: string;
+    path: string[];
     children: Map<string, AbstractLogElement>;
     created: number;
 
-    protected constructor(id: string) {
-        this.id = id;
+    protected constructor(path: string[]) {
+        this.path = path;
         this.children = new Map();
         this.created = Date.now();
+    }
+
+    id(): string {
+        return this.path[this.path.length - 1];
     }
 
     getElement(path: string[]): AbstractLogElement | undefined {
@@ -18,18 +22,20 @@ export abstract class AbstractLogElement {
         }
     }
 
-    addElement(path: string[], element: AbstractLogElement) {
+    addElement(so_far_path: string[], path: string[], element: AbstractLogElement) {
         if (path.length === 1) {
             this.children.set(path[0], element);
         }
         else {
             const child = this.children.get(path[0]);
             if (child) {
-                child.addElement(path.slice(1), element);
+                so_far_path.push(path[0]);
+                child.addElement(so_far_path, path.slice(1), element);
             }
             else {
-                const nn = new NodeElement(path[0], {card: false});
-                nn.addElement(path.slice(1), element)
+                so_far_path.push(path[0]);
+                const nn = new NodeElement(so_far_path, {card: false});
+                nn.addElement(so_far_path, path.slice(1), element)
                 this.children.set(path[0], nn);
             }
         }
@@ -55,15 +61,17 @@ export abstract class AbstractLogElement {
     abstract updateData(new_data: any): void;
 
     static rootElement(): AbstractLogElement {
-        return new RootElement("root");
+        return new RootElement([]);
     }
 
     abstract type(): string;
+
+    changeHandled() {};
 }
 
 export class RootElement extends AbstractLogElement {
-    constructor(id: string) {
-        super(id);
+    constructor(path: string[]) {
+        super(path);
     }
 
     static s_type(): string {
@@ -80,8 +88,8 @@ export class RootElement extends AbstractLogElement {
 export class NodeElement extends AbstractLogElement {
     card: boolean;
 
-    constructor(id: string, data: any) {
-        super(id);
+    constructor(path: string[], data: any) {
+        super(path);
         this.card = data.card;
     }
 
