@@ -19,9 +19,9 @@ export default function App() {
     }
 
     return <>
+        {!isConnected && <DisconnectedWarning/>}
         <div className="container mt-3">
             {[...tree.children].map(([i, v]) => <AnyElement key={i} element={v}/>)}
         </div>
-        {!isConnected && !SAMPLE_MODE && <DisconnectedWarning/>}
     </>
 }

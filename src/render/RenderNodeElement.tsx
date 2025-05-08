@@ -7,8 +7,8 @@ interface Props {
 }
 
 export function RenderNodeElement({node}: Props): ReactNode {
-    return <div key={node.id.toString()}>
-        <h3>{node.id}</h3>
+    return <div key={node.id.toString()} className="w-auto mb-2">
+        <h3 className="mb-0">{node.id}</h3>
         <div className="d-flex flex-row">
             <div style={{width: "30px", height: "auto"}}>
                 <div className="d-flex flex-row h-100 w-100">
@@ -17,7 +17,8 @@ export function RenderNodeElement({node}: Props): ReactNode {
                 </div>
             </div>
 
-            <div>
+            <div className="flex-grow-1">
+                {node.children.size > 0 && <div className="mb-2"></div>}
                 {[...node.children].map(([i, v]) => <AnyElement key={i} element={v}/>)}
             </div>
         </div>
