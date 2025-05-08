@@ -9,6 +9,15 @@ export abstract class AbstractLogElement {
         this.created = Date.now();
     }
 
+    getElement(path: string[]): AbstractLogElement | undefined {
+        if (path.length === 0) {
+            return this;
+        }
+        else {
+            return this.children.get(path[0])?.getElement(path.slice(1));
+        }
+    }
+
     addElement(path: string[], element: AbstractLogElement) {
         if (path.length === 1) {
             this.children.set(path[0], element);
@@ -19,7 +28,7 @@ export abstract class AbstractLogElement {
                 child.addElement(path.slice(1), element);
             }
             else {
-                const nn = new NodeElement(path[0]);
+                const nn = new NodeElement(path[0], {card: false});
                 nn.addElement(path.slice(1), element)
                 this.children.set(path[0], nn);
             }
@@ -34,18 +43,46 @@ export abstract class AbstractLogElement {
         }
     }
 
+    clearElement(path: string[]) {
+        if (path.length === 0) {
+            this.children.clear();
+        }
+        else {
+            this.children.get(path[0])?.clearElement(path.slice(1));
+        }
+    }
+
     abstract updateData(new_data: any): void;
 
     static rootElement(): AbstractLogElement {
-        return new NodeElement("root");
+        return new RootElement("root");
     }
 
     abstract type(): string;
 }
 
-export class NodeElement extends AbstractLogElement {
+export class RootElement extends AbstractLogElement {
     constructor(id: string) {
         super(id);
+    }
+
+    static s_type(): string {
+        return "root";
+    };
+
+    type(): string {
+        return RootElement.s_type();
+    }
+
+    updateData(): void {}
+}
+
+export class NodeElement extends AbstractLogElement {
+    card: boolean;
+
+    constructor(id: string, data: any) {
+        super(id);
+        this.card = data.card;
     }
 
     static s_type(): string {
@@ -56,26 +93,7 @@ export class NodeElement extends AbstractLogElement {
         return NodeElement.s_type();
     }
 
-    updateData(): void {}
-}
-
-export class TextElement extends AbstractLogElement {
-    text: string;
-
-    constructor(id: string, data: any) {
-        super(id);
-        this.text = data.text;
-    }
-
     updateData(new_data: any): void {
-        this.text = new_data.text;
-    }
-
-    static s_type(): string {
-        return "text";
-    };
-
-    type(): string {
-        return TextElement.s_type();
+        this.card = new_data.card;
     }
 }

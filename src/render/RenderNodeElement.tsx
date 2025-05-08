@@ -1,6 +1,6 @@
 import {type ReactNode} from "react";
-import type {NodeElement} from "./backend/log_tree.ts";
-import AnyElement from "./AnyElement.tsx";
+import AnyElement from "../AnyElement.tsx";
+import type {NodeElement} from "../backend/log_tree.ts";
 
 interface Props {
     node: NodeElement;
