@@ -34,7 +34,7 @@ export abstract class AbstractLogElement {
             }
             else {
                 so_far_path.push(path[0]);
-                const nn = new NodeElement(so_far_path, {card: false});
+                const nn = new NodeElement(structuredClone(so_far_path), {card: false});
                 nn.addElement(so_far_path, path.slice(1), element)
                 this.children.set(path[0], nn);
             }
