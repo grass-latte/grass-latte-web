@@ -1,3 +1,5 @@
+import {type NodeWidgetData, NodeWidgetTypeName} from "./interface.ts";
+
 export abstract class AbstractTreeWidget {
     path: string[];
     children: Map<string, AbstractTreeWidget>;
@@ -83,20 +85,16 @@ export class RootElement extends AbstractTreeWidget {
 export class NodeWidget extends AbstractTreeWidget {
     card: boolean;
 
-    constructor(path: string[], data: any) {
+    constructor(path: string[], data: NodeWidgetData) {
         super(path);
         this.card = data.card;
     }
 
-    static s_type(): string {
-        return "node";
-    };
-
     type(): string {
-        return NodeWidget.s_type();
+        return NodeWidgetTypeName;
     }
 
-    updateData(new_data: any): void {
+    updateData(new_data: NodeWidgetData): void {
         this.card = new_data.card;
     }
 }

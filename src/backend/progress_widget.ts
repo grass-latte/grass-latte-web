@@ -1,28 +1,25 @@
 import {AbstractTreeWidget} from "./log_tree.ts";
+import {type ProgressWidgetData, ProgressWidgetTypeName} from "./interface.ts";
 
 export class ProgressWidget extends AbstractTreeWidget {
     progress: number;
     card: boolean;
     text: string | undefined;
 
-    constructor(path: string[], data: any) {
+    constructor(path: string[], data: ProgressWidgetData) {
         super(path);
         this.progress = data.progress;
         this.card = data.card;
-        this.text = data.text;
+        this.text = data.text ?? undefined;
     }
 
-    updateData(new_data: any): void {
+    updateData(new_data: ProgressWidgetData): void {
         this.progress = new_data.progress;
         this.card = new_data.card;
-        this.text = new_data.text;
+        this.text = new_data.text ?? undefined;
     }
 
-    static s_type(): string {
-        return "progress";
-    };
-
     type(): string {
-        return ProgressWidget.s_type();
+        return ProgressWidgetTypeName;
     }
 }

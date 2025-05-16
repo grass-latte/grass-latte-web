@@ -6,6 +6,12 @@ import {ProgressWidget} from "./backend/progress_widget.ts";
 import {RenderProgressWidget} from "./render/RenderProgressWidget.tsx";
 import {ButtonWidget} from "./backend/button_widget.ts";
 import {RenderButtonWidget} from "./render/RenderButtonWidget.tsx";
+import {
+    ButtonWidgetTypeName,
+    NodeWidgetTypeName,
+    ProgressWidgetTypeName,
+    TextWidgetTypeName
+} from "./backend/interface.ts";
 
 interface Props {
     widget: AbstractTreeWidget;
@@ -13,13 +19,13 @@ interface Props {
 
 export default function AnyWidget({widget}: Props) {
     switch (widget.type()) {
-        case NodeWidget.s_type():
+        case NodeWidgetTypeName:
             return <RenderNodeWidget node={widget as NodeWidget}/>
-        case TextWidget.s_type():
+        case TextWidgetTypeName:
             return <RenderTextWidget textElement={widget as TextWidget}/>
-        case ProgressWidget.s_type():
+        case ProgressWidgetTypeName:
             return <RenderProgressWidget progressElement={widget as ProgressWidget}/>
-        case ButtonWidget.s_type():
+        case ButtonWidgetTypeName:
             return <RenderButtonWidget buttonElement={widget as ButtonWidget}/>
         default:
             console.error("Unrecognized type");
