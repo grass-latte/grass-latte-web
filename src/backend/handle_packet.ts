@@ -1,15 +1,15 @@
 import type {WsEvent} from "./websockets.ts";
-import {type AbstractLogElement, NodeElement} from "./log_tree.ts";
-import {TextElement} from "./text_element.ts";
-import {ProgressElement} from "./progress_element.ts";
-import {ButtonElement} from "./button_element.ts";
+import {type AbstractTreeWidget, NodeWidget} from "./log_tree.ts";
+import {TextWidget} from "./text_widget.ts";
+import {ProgressWidget} from "./progress_widget.ts";
+import {ButtonWidget} from "./button_widget.ts";
 
-export function handlePacket(queue: WsEvent[], tree: AbstractLogElement) {
+export function handlePacket(queue: WsEvent[], tree: AbstractTreeWidget) {
     for (const event of queue) {
         const obj = JSON.parse(event.data);
         switch (obj.type) {
-            case "element":
-                handleElement(obj.data, tree);
+            case "widget":
+                handleWidget(obj.data, tree);
                 break;
             case "delete":
                 handleDelete(obj.data, tree);
@@ -26,44 +26,44 @@ export function handlePacket(queue: WsEvent[], tree: AbstractLogElement) {
     }
 }
 
-function handleElement(data: any, tree: AbstractLogElement) {
-    const existing = tree.getElement(data.path);
-    if (existing && existing.type() == data.element.type) {
-        existing.updateData(data.element.data);
+function handleWidget(data: any, tree: AbstractTreeWidget) {
+    const existing = tree.getWidget(data.path);
+    if (existing && existing.type() == data.widget.type) {
+        existing.updateData(data.widget.data);
         return;
     }
 
-    let element: AbstractLogElement;
+    let widget: AbstractTreeWidget;
 
-    switch (data.element.type) {
-        case NodeElement.s_type():
-            element = new NodeElement(data.path, data.element.data);
+    switch (data.widget.type) {
+        case NodeWidget.s_type():
+            widget = new NodeWidget(data.path, data.widget.data);
             break;
-        case TextElement.s_type():
-            element = new TextElement(data.path, data.element.data);
+        case TextWidget.s_type():
+            widget = new TextWidget(data.path, data.widget.data);
             break;
-        case ProgressElement.s_type():
-            element = new ProgressElement(data.path, data.element.data);
+        case ProgressWidget.s_type():
+            widget = new ProgressWidget(data.path, data.widget.data);
             break;
-        case ButtonElement.s_type():
-            element = new ButtonElement(data.path, data.element.data);
+        case ButtonWidget.s_type():
+            widget = new ButtonWidget(data.path, data.widget.data);
             break;
         default:
-            console.warn(`Unhandled element type ${data.element.type}`);
+            console.warn(`Unhandled widget type ${data.widget.type}`);
             return;
     }
 
-    tree.addElement([], data.path, element);
+    tree.addWidget([], data.path, widget);
 }
 
-function handleDelete(data: any, tree: AbstractLogElement) {
-    tree.deleteElement(data.path);
+function handleDelete(data: any, tree: AbstractTreeWidget) {
+    tree.deleteWidget(data.path);
 }
 
-function handleClear(_data: any, tree: AbstractLogElement) {
-    tree.clearElement();
+function handleClear(_data: any, tree: AbstractTreeWidget) {
+    tree.clearWidgets();
 }
 
-function handleHandled(data: any, tree: AbstractLogElement) {
-    tree.getElement(data.path)?.setHandled();
+function handleHandled(data: any, tree: AbstractTreeWidget) {
+    tree.getWidget(data.path)?.setHandled();
 }

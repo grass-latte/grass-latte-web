@@ -1,6 +1,6 @@
-import {AbstractLogElement} from "./log_tree.ts";
+import {AbstractTreeWidget} from "./log_tree.ts";
 
-export class TextElement extends AbstractLogElement {
+export class TextWidget extends AbstractTreeWidget {
     text: string
     card: boolean;
 
@@ -20,6 +20,6 @@ export class TextElement extends AbstractLogElement {
     };
 
     type(): string {
-        return TextElement.s_type();
+        return TextWidget.s_type();
     }
 }

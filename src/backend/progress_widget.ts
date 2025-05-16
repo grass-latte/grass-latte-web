@@ -1,6 +1,6 @@
-import {AbstractLogElement} from "./log_tree.ts";
+import {AbstractTreeWidget} from "./log_tree.ts";
 
-export class ProgressElement extends AbstractLogElement {
+export class ProgressWidget extends AbstractTreeWidget {
     progress: number;
     card: boolean;
     text: string | undefined;
@@ -23,6 +23,6 @@ export class ProgressElement extends AbstractLogElement {
     };
 
     type(): string {
-        return ProgressElement.s_type();
+        return ProgressWidget.s_type();
     }
 }

@@ -1,14 +1,14 @@
 import {type ReactNode, useState} from "react";
-import AnyElement from "../AnyElement.tsx";
-import type {NodeElement} from "../backend/log_tree.ts";
+import AnyWidget from "../AnyWidget.tsx";
+import type {NodeWidget} from "../backend/log_tree.ts";
 import {CaretDown, CaretRight} from "react-bootstrap-icons";
 import {AnimatePresence, motion} from "framer-motion";
 
 interface Props {
-    node: NodeElement;
+    node: NodeWidget;
 }
 
-export function RenderNodeElement({node}: Props): ReactNode {
+export function RenderNodeWidget({node}: Props): ReactNode {
     const [isOpen, setIsOpen] = useState(true);
     const toggle = () => setIsOpen((prev) => !prev);
 
@@ -32,7 +32,7 @@ export function RenderNodeElement({node}: Props): ReactNode {
 
                 <div className="flex-grow-1">
                     {node.children.size > 0 && <div className="mb-2"></div>}
-                    {[...node.children].map(([i, v]) => <AnyElement key={i} element={v}/>)}
+                    {[...node.children].map(([i, v]) => <AnyWidget key={i} widget={v}/>)}
                 </div>
             </motion.div>}
         </AnimatePresence>

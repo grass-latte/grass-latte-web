@@ -1,6 +1,6 @@
-import {AbstractLogElement} from "./log_tree.ts";
+import {AbstractTreeWidget} from "./log_tree.ts";
 
-export class ButtonElement extends AbstractLogElement {
+export class ButtonWidget extends AbstractTreeWidget {
     text: string
     card: boolean;
     handled: boolean = true;
@@ -25,6 +25,6 @@ export class ButtonElement extends AbstractLogElement {
     };
 
     type(): string {
-        return ButtonElement.s_type();
+        return ButtonWidget.s_type();
     }
 }

@@ -1,23 +1,23 @@
 import type {ReactNode} from "react";
 import {Card, CardBody, CardText, CardTitle} from "react-bootstrap";
-import type {AbstractLogElement} from "../backend/log_tree.ts";
-import AnyElement from "../AnyElement.tsx";
+import type {AbstractTreeWidget} from "../backend/log_tree.ts";
+import AnyWidget from "../AnyWidget.tsx";
 
 interface Props {
     card: boolean,
     use_card_text?: boolean,
     title?: string,
-    child_elements?: Map<string, AbstractLogElement>
+    child_widgets?: Map<string, AbstractTreeWidget>
     children?: ReactNode,
 }
 
-export default function OptionalCard({card, use_card_text, title, child_elements, children}: Props) {
+export default function OptionalCard({card, use_card_text, title, child_widgets, children}: Props) {
     if (card) {
         return <Card className="w-auto mb-2">
             <CardBody>
                 {title && <CardTitle>{title}</CardTitle>}
                 {use_card_text ? <CardText>{children}</CardText> : children}
-                {child_elements && child_elements.size > 0 && <div className="d-flex flex-row">
+                {child_widgets && child_widgets.size > 0 && <div className="d-flex flex-row">
                     <div style={{width: "30px", height: "auto"}}>
                         <div className="d-flex flex-row h-100 w-100">
                             <div className={"h-100"} style={{width: "4px"}}></div>
@@ -25,7 +25,7 @@ export default function OptionalCard({card, use_card_text, title, child_elements
                         </div>
                     </div>
                     <div>
-                        {[...child_elements].map(([i, v]) => <AnyElement key={i} element={v}/>)}
+                        {[...child_widgets].map(([i, v]) => <AnyWidget key={i} widget={v}/>)}
                     </div>
                 </div>}
             </CardBody>
@@ -36,7 +36,7 @@ export default function OptionalCard({card, use_card_text, title, child_elements
             {title && <p className="m-0">{title}:&nbsp;</p>}
             <div className="flex-grow-1">{children}</div>
         </div>
-            {child_elements && child_elements.size > 0 && <div className="d-flex flex-row mb-2">
+            {child_widgets && child_widgets.size > 0 && <div className="d-flex flex-row mb-2">
                 <div style={{width: "30px", height: "auto"}}>
                     <div className="d-flex flex-row h-100 w-100">
                         <div className={"h-100"} style={{width: "4px"}}></div>
@@ -45,7 +45,7 @@ export default function OptionalCard({card, use_card_text, title, child_elements
                 </div>
                 <div className="flex-grow-1">
                     <div className="mb-1"></div>
-                    {[...child_elements].map(([i, v]) => <AnyElement key={i} element={v}/>)}
+                    {[...child_widgets].map(([i, v]) => <AnyWidget key={i} widget={v}/>)}
                 </div>
             </div>}
         </>;

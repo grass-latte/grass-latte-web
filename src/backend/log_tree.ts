@@ -1,6 +1,6 @@
-export abstract class AbstractLogElement {
+export abstract class AbstractTreeWidget {
     path: string[];
-    children: Map<string, AbstractLogElement>;
+    children: Map<string, AbstractTreeWidget>;
     created: number;
 
     protected constructor(path: string[]) {
@@ -13,49 +13,49 @@ export abstract class AbstractLogElement {
         return this.path[this.path.length - 1];
     }
 
-    getElement(path: string[]): AbstractLogElement | undefined {
+    getWidget(path: string[]): AbstractTreeWidget | undefined {
         if (path.length === 0) {
             return this;
         }
         else {
-            return this.children.get(path[0])?.getElement(path.slice(1));
+            return this.children.get(path[0])?.getWidget(path.slice(1));
         }
     }
 
-    addElement(so_far_path: string[], path: string[], element: AbstractLogElement) {
+    addWidget(so_far_path: string[], path: string[], widget: AbstractTreeWidget) {
         if (path.length === 1) {
-            this.children.set(path[0], element);
+            this.children.set(path[0], widget);
         }
         else {
             const child = this.children.get(path[0]);
             if (child) {
                 so_far_path.push(path[0]);
-                child.addElement(so_far_path, path.slice(1), element);
+                child.addWidget(so_far_path, path.slice(1), widget);
             }
             else {
                 so_far_path.push(path[0]);
-                const nn = new NodeElement(structuredClone(so_far_path), {card: false});
-                nn.addElement(so_far_path, path.slice(1), element)
+                const nn = new NodeWidget(structuredClone(so_far_path), {card: false});
+                nn.addWidget(so_far_path, path.slice(1), widget)
                 this.children.set(path[0], nn);
             }
         }
     }
 
-    deleteElement(path: string[]) {
+    deleteWidget(path: string[]) {
         if (path.length === 1) {
             this.children.delete(path[0]);
         } else {
-            this.children.get(path[0])?.deleteElement(path.slice(1));
+            this.children.get(path[0])?.deleteWidget(path.slice(1));
         }
     }
 
-    clearElement() {
+    clearWidgets() {
         this.children.clear();
     }
 
     abstract updateData(new_data: any): void;
 
-    static rootElement(): AbstractLogElement {
+    static rootElement(): AbstractTreeWidget {
         return new RootElement([]);
     }
 
@@ -64,7 +64,7 @@ export abstract class AbstractLogElement {
     setHandled() {};
 }
 
-export class RootElement extends AbstractLogElement {
+export class RootElement extends AbstractTreeWidget {
     constructor(path: string[]) {
         super(path);
     }
@@ -80,7 +80,7 @@ export class RootElement extends AbstractLogElement {
     updateData(): void {}
 }
 
-export class NodeElement extends AbstractLogElement {
+export class NodeWidget extends AbstractTreeWidget {
     card: boolean;
 
     constructor(path: string[], data: any) {
@@ -93,7 +93,7 @@ export class NodeElement extends AbstractLogElement {
     };
 
     type(): string {
-        return NodeElement.s_type();
+        return NodeWidget.s_type();
     }
 
     updateData(new_data: any): void {
